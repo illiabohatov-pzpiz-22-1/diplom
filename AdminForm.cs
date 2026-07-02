@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -382,16 +382,15 @@ namespace DIPLOM_
 
                 if (!fixPanelCheckBox.Checked) panel1.Visible = false;
             }
-            catch (SqliteException ex)
+            catch (MySqlException ex)
             {
-                if (ex.SqliteErrorCode == 19)
+                if (ex.Number == 1062)
                 {
-                    statusLabel.Text = "This login exists";
-                    statusLabel.Visible = true;
+                    MessageBox.Show("This login is already taken!");
                 }
                 else
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show($"Database error: {ex.Message}");
                 }
             }
         }
